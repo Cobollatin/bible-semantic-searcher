@@ -1,0 +1,129 @@
+<div class="max-w-4xl p-4 mx-auto">
+  <!-- Search Form -->
+  <form
+    (submit)="onSearchSubmit($event)"
+    class="flex flex-col items-center gap-4 mb-6 sm:flex-row"
+  >
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      name="search"
+      placeholder="Search verses (min 5 characters)..."
+      class="flex-grow p-3 font-bold text-black border rounded border-gray-30 focus:outline-none focus:ring-2 focus:ring-blue-50"
+      aria-label="Search Verses"
+    />
+    <button
+      type="submit"
+      class="px-4 py-2 font-medium text-white transition rounded bg-blue-50 hover:bg-blue-70 focus:outline-none focus:ring-2 focus:ring-blue-50"
+      [disabled]="isLoading"
+    >
+      Search
+    </button>
+  </form>
+
+  <!-- Recent Searches -->
+  <div *ngIf="recentSearches.length > 0" class="mb-6">
+    <h3 class="mb-2 text-lg font-semibold text-gray-700">Recent Searches:</h3>
+    <ul class="flex flex-wrap gap-2">
+      <li *ngFor="let term of recentSearches">
+        <button
+          (click)="onRecentSearchClick(term)"
+          class="px-3 py-1 text-sm font-medium rounded text-blue-50 bg-gray-30 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-50"
+        >
+          {{ term }}
+        </button>
+      </li>
+      <li>
+        <button
+          (click)="clearRecentSearches()"
+          class="px-3 py-1 text-sm font-medium rounded text-red-50 bg-gray-30 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-50"
+        >
+          Clear
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="mb-4 text-center text-red-50">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Loading Indicator -->
+  <div
+    *ngIf="isLoading"
+    class="flex items-center justify-center mb-4 text-blue-50"
+  >
+    <svg
+      class="w-8 h-8 mr-3 animate-spin text-blue-50"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <circle
+        class="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        stroke-width="4"
+      ></circle>
+      <path
+        class="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8v8H4z"
+      ></path>
+    </svg>
+    Loading...
+  </div>
+
+  <!-- Verses Grid -->
+  <div
+    class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+    *ngIf="filteredVerses.length > 0"
+  >
+    <div
+      *ngFor="let verse of filteredVerses"
+      class="p-6 transition-shadow duration-300 bg-white rounded-lg shadow-md hover:shadow-lg"
+    >
+      <h2 class="mb-2 text-xl font-semibold text-blue-50">
+        {{ verse.book }} {{ verse.chapter }}:{{ verse.verseNumber }}
+      </h2>
+      <p class="mb-4 text-gray-30">{{ verse.text }}</p>
+      <a
+        [href]="verse.source"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="underline cursor-pointer text-blue-50 hover:text-blue-70"
+      >
+        View Source
+      </a>
+    </div>
+  </div>
+
+  <!-- No Results Message -->
+  <div
+    *ngIf="
+      !isLoading &&
+      !errorMessage &&
+      searchInitiated &&
+      filteredVerses.length === 0
+    "
+    class="mt-6 text-center text-gray-30"
+  >
+    No verses found matching your search.
+  </div>
+
+  <!-- Prompt Message Before Search -->
+  <div
+    *ngIf="
+      !isLoading &&
+      !errorMessage &&
+      !searchInitiated &&
+      filteredVerses.length === 0
+    "
+    class="mt-6 text-center text-gray-30"
+  >
+    Enter at least 5 characters to search for verses.
+  </div>
+</div>

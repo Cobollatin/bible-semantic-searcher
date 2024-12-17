@@ -1,0 +1,46 @@
+@tailwind base;
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&display=swap');
+
+:root {
+  --color-primary: theme('colors.blue.50');
+  --color-secondary: theme('colors.gray.30');
+}
+
+body {
+  @apply bg-gray-100 text-gray-30 font-sans;
+}
+
+a {
+  @apply text-blue-50 hover:text-blue-70 transition-colors duration-200;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-semibold text-gray-10;
+}
+
+button {
+  @apply bg-blue-50 text-white font-medium py-2 px-4 rounded hover:bg-blue-70 focus:outline-none focus:ring-2 focus:ring-blue-50 focus:ring-opacity-50 transition;
+}
+
+@media (min-width: 768px) {
+  .container {
+    @apply max-w-3xl mx-auto;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    @apply bg-gray-10 text-gray-100;
+  }
+
+  a {
+    @apply text-blue-30 hover:text-blue-50;
+  }
+
+  .card {
+    @apply bg-gray-20 shadow-lg;
+  }
+}
+
+@tailwind components;
+@tailwind utilities;
