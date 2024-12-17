@@ -9,6 +9,8 @@ public class BibleDbContext(DbContextOptions<BibleDbContext> options) : DbContex
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasPostgresExtension("vector");
+
         modelBuilder.Entity<Verse>()
             .HasKey(verse => new { verse.Book, verse.Chapter, verse.VerseNumber });
         modelBuilder.Entity<Verse>()
@@ -39,5 +41,14 @@ public class BibleDbContext(DbContextOptions<BibleDbContext> options) : DbContex
             .HasIndex(verse => verse.Text)
             .HasMethod("GIN")
             .IsTsVectorExpressionIndex("spanish");
+
+        modelBuilder.Entity<Verse>()
+            .HasIndex(i => i.Embedding)
+            .HasMethod("hnsw")
+            .HasOperators("vector_l2_ops")
+            .HasStorageParameter("m", 16)
+            .HasStorageParameter("ef_construction", 64);
+
+        base.OnModelCreating(modelBuilder);
     }
 }

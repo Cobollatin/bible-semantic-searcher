@@ -1,5 +1,3 @@
-// src/app/models/verse.model.ts
-
 export interface Verse {
   book: string;
   text: string;

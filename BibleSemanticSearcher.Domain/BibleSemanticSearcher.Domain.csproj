@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Npgsql" Version="8.0.6" />
+    <PackageReference Include="Pgvector.EntityFrameworkCore" Version="0.2.1" />
   </ItemGroup>
 
 </Project>

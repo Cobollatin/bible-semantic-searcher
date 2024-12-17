@@ -3,6 +3,8 @@ using Aspire.Hosting;
 var builder = DistributedApplication.CreateBuilder(args);
 
 var postgres = builder.AddPostgres("postgres")
+        .WithImage("pgvector/pgvector")
+        .WithImageTag("pg17")
         .WithDataVolume(isReadOnly: false)
         .WithPgAdmin();
 
